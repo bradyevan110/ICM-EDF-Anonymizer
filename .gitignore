@@ -1,0 +1,5 @@
+# never commit recordings or review notes
+*.edf
+*.EDF
+EDF_anon*/
+__pycache__/
