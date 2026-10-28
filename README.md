@@ -58,6 +58,31 @@ If `-i` is omitted, the input is the folder containing the script.
 Annotation text is replaced with X's of the same length, so record layout and annotation timing
 are unchanged.
 
+## Converting to BIDS-iEEG
+
+`edf_to_bids.py` turns the de-identified `EDF_anon` folder into a BIDS-iEEG dataset. It refuses
+any file whose header has not been de-identified.
+
+```bash
+python edf_to_bids.py -i D:/ICM_EDFs/EDF_anon                        # output: BIDS next to the input folder
+python edf_to_bids.py -i D:/ICM_EDFs/EDF_anon --task EBDM --session ieeg1 --reference "referential to ..."
+```
+
+Each recording becomes `sub-<id>/ses-<session>/ieeg/sub-<id>_ses-<session>_task-<task>_ieeg.edf`.
+Next to it the script writes `_ieeg.json`, `_channels.tsv` (types inferred from the labels:
+depth contacts as SEEG, 10-20 names as EEG, EKG, TRIG, DC inputs as ADC) and `_events.tsv`
+(from the EDF+ annotations). It also writes `dataset_description.json`, `participants.tsv`
+and `README`. Electrode coordinates are not included because the EDFs contain none.
+
+| Option | Default |
+|---|---|
+| `--task` | `EBDM` |
+| `--session` | `ieeg1` |
+| `--line-freq` | `60` |
+| `--reference` | `n/a` (fill in the recording reference) |
+| `--institution` | `n/a` |
+| `--only`, `--overwrite` | as above |
+
 ## Before sharing
 
 Free-text annotations can contain anything a clinician typed. Read each
